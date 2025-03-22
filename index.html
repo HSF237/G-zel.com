@@ -43,20 +43,29 @@
             width: 250px;
         }
 
-        #cart-items li {
+        /* Product Cards */
+        .products-container {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
         }
 
-        .remove-btn {
-            background: red;
-            color: white;
-            border: none;
-            padding: 5px 10px;
+        .product {
+            background: #222;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 255, 0, 0.3);
+            padding: 20px;
+            text-align: center;
+            width: 250px;
+            transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
-            border-radius: 5px;
+        }
+
+        .product:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 0px 25px rgba(0, 255, 0, 0.5);
         }
 
         /* Payment Modal */
@@ -73,17 +82,6 @@
             width: 300px;
             text-align: center;
             border-radius: 10px;
-        }
-
-        /* Buttons */
-        button {
-            background: #66cc66;
-            color: black;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-weight: bold;
         }
 
         .close-btn {
@@ -143,7 +141,7 @@
     </div>
 
     <!-- Products -->
-    <section id="products">
+    <section id="products" class="products-container">
         <div class="product">
             <h3>Black Shirt</h3>
             <p>Price: ₹1200</p>
@@ -169,17 +167,11 @@
 
         function toggleCart() {
             let cartElement = document.getElementById('cart');
-            cartElement.style.display = cartElement.style.display === 'none' || cartElement.style.display === '' ? 'block' : 'none';
+            cartElement.style.display = cartElement.style.display === 'none' ? 'block' : 'none';
         }
 
         function addToCart(name, price) {
-            let item = cart.find(item => item.name === name);
-            if (item) {
-                item.quantity += 1;
-                item.totalPrice += price;
-            } else {
-                cart.push({ name, price, quantity: 1, totalPrice: price });
-            }
+            cart.push({ name, price });
             totalAmount += price;
             updateCart();
         }
@@ -188,34 +180,12 @@
             const cartItems = document.getElementById('cart-items');
             const totalAmountElement = document.getElementById('total-amount');
             cartItems.innerHTML = '';
-
             cart.forEach(item => {
                 const li = document.createElement('li');
-                li.textContent = `${item.name} (x${item.quantity}) - ₹${item.totalPrice}`;
-                const removeBtn = document.createElement('button');
-                removeBtn.textContent = 'X';
-                removeBtn.className = 'remove-btn';
-                removeBtn.onclick = () => removeFromCart(item.name);
-                li.appendChild(removeBtn);
+                li.textContent = `${item.name} - ₹${item.price}`;
                 cartItems.appendChild(li);
             });
-
             totalAmountElement.textContent = `Total: ₹${totalAmount}`;
-        }
-
-        function removeFromCart(name) {
-            let itemIndex = cart.findIndex(item => item.name === name);
-            if (itemIndex !== -1) {
-                let item = cart[itemIndex];
-                totalAmount -= item.price;
-                if (item.quantity > 1) {
-                    item.quantity--;
-                    item.totalPrice -= item.price;
-                } else {
-                    cart.splice(itemIndex, 1);
-                }
-                updateCart();
-            }
         }
 
         function showPaymentOptions() {
@@ -228,15 +198,24 @@
         }
 
         function makePayment(method) {
-            let upiID;
-            if (method === 'gpay') {
-                upiID = "9048683929@upi";
-            } else if (method === 'phonepe') {
-                upiID = "9048683929@ybl";
-            } else if (method === 'paytm') {
-                upiID = "9048683929@paytm";
-            }
+            let upiID = method === 'gpay' ? "9048683929@okhdfcbank" :
+                        method === 'phonepe' ? "9048683929@ybl" :
+                        "9048683929@paytm";
             window.location.href = `upi://pay?pa=${upiID}&pn=Guzel&am=${totalAmount}&cu=INR`;
+        }
+
+        function showAbout() {
+            document.getElementById('about-section').style.display = 'block';
+            document.getElementById('products').style.display = 'none';
+        }
+
+        function showProducts() {
+            document.getElementById('products').style.display = 'flex';
+            document.getElementById('about-section').style.display = 'none';
+        }
+
+        function contactWhatsApp() {
+            window.location.href = "https://wa.me/919048683929?text=Hello%20Guzel%20Team!";
         }
     </script>
 </body>
