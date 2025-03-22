@@ -229,12 +229,12 @@
             const totalAmountElement = document.getElementById('total-amount');
             cartItems.innerHTML = '';
 
-            cart.forEach((item, index) => {
+            cart.forEach(item => {
                 const li = document.createElement('li');
                 li.textContent = `${item.name} (x${item.quantity}) - ₹${item.totalPrice}`;
                 const removeBtn = document.createElement('button');
                 removeBtn.textContent = 'X';
-                removeBtn.onclick = () => { removeFromCart(index, item.price); };
+                removeBtn.onclick = () => removeFromCart(item.name);
                 li.appendChild(removeBtn);
                 cartItems.appendChild(li);
             });
@@ -242,18 +242,18 @@
             totalAmountElement.textContent = `Total: ₹${totalAmount}`;
         }
 
-        function showProducts() {
-            document.getElementById('about-section').style.display = 'none';
-            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+        function removeFromCart(name) {
+            let itemIndex = cart.findIndex(item => item.name === name);
+            if (itemIndex !== -1) {
+                let item = cart[itemIndex];
+                item.quantity > 1 ? item.quantity-- : cart.splice(itemIndex, 1);
+                totalAmount -= item.price;
+                updateCart();
+            }
         }
 
-        function showAbout() {
-            document.getElementById('about-section').style.display = 'block';
-            document.getElementById('about-section').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function contactWhatsApp() {
-            window.location.href = "https://wa.me/919048683929";
+        function makePayment() {
+            window.location.href = `upi://pay?pa=8086549517@upi&pn=Guzel&am=${totalAmount}&cu=INR`;
         }
     </script>
 </body>
