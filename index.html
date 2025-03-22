@@ -10,39 +10,74 @@
             margin: 0;
             padding: 0;
             text-align: center;
+            background: linear-gradient(to right, #ffafbd, #ffc3a0);
+            animation: fadeIn 1.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         header {
             background: #333;
             color: white;
-            padding: 10px;
+            padding: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            animation: slideDown 1s ease-in-out;
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
         }
         #cart-icon {
             cursor: pointer;
+            transition: transform 0.3s;
+        }
+        #cart-icon:hover {
+            transform: scale(1.2);
         }
         #cart {
             position: fixed;
             right: 0;
-            top: 50px;
+            top: 60px;
             background: white;
-            padding: 10px;
+            padding: 15px;
             border: 1px solid #ccc;
             display: none;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.5s;
         }
         .product {
             border: 1px solid #ddd;
-            margin: 10px;
-            padding: 10px;
+            margin: 15px;
+            padding: 15px;
             display: inline-block;
+            background: white;
+            box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: popIn 0.5s ease-in-out;
+        }
+        .product:hover {
+            transform: scale(1.05);
+            box-shadow: 4px 8px 12px rgba(0, 0, 0, 0.3);
+        }
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
         button {
             background: #28a745;
             color: white;
             border: none;
-            padding: 5px 10px;
+            padding: 8px 12px;
             cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #218838;
         }
         #payment-options {
             display: none;
@@ -53,12 +88,8 @@
             background: white;
             padding: 20px;
             border: 1px solid #ccc;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-        .payment-options button {
-            display: block;
-            width: 100%;
-            margin: 10px 0;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.5s;
         }
     </style>
 </head>
@@ -99,7 +130,7 @@
     
     <script>
         let cart = [];
-        const shopNumber = "9876543210"; // Shop owner's number
+        const shopNumber = "9745544623"; // Shop owner's number
         function toggleCart() {
             let cartElement = document.getElementById('cart');
             cartElement.style.display = (cartElement.style.display === 'none' || cartElement.style.display === '') ? 'block' : 'none';
@@ -131,15 +162,6 @@
                 return;
             }
             document.getElementById('payment-options').style.display = 'block';
-        }
-        function makePayment(method) {
-            let amount = cart.reduce((sum, item) => sum + item.price, 0);
-            let paymentLinks = {
-                'GPay': `upi://pay?pa=${shopNumber}@upi&pn=ShopOwner&am=${amount}&cu=INR`,
-                'PhonePe': `phonepe://pay?pa=${shopNumber}@ybl&pn=ShopOwner&am=${amount}&cu=INR`,
-                'Paytm': `paytm://upi/pay?pa=${shopNumber}@paytm&pn=ShopOwner&am=${amount}&cu=INR`
-            };
-            window.location.href = paymentLinks[method];
         }
     </script>
 </body>
