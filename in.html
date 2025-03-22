@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clothing Shop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        header {
+            background: #333;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #cart-icon {
+            cursor: pointer;
+        }
+        #cart {
+            position: fixed;
+            right: 0;
+            top: 50px;
+            background: white;
+            padding: 10px;
+            border: 1px solid #ccc;
+            display: none;
+        }
+        .product {
+            border: 1px solid #ddd;
+            margin: 10px;
+            padding: 10px;
+            display: inline-block;
+        }
+        button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        #payment-options {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .payment-options button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Your Clothing Shop</h1>
+        <input type="text" id="search-bar" placeholder="Search for products...">
+        <div id="cart-icon" onclick="toggleCart()">🛒</div>
+    </header>
+    
+    <div id="cart">
+        <h2>Shopping Cart</h2>
+        <ul id="cart-items"></ul>
+        <button onclick="showPaymentOptions()">Proceed to Buy</button>
+    </div>
+    
+    <div id="payment-options">
+        <h2>Select Payment Method</h2>
+        <div class="payment-options">
+            <button onclick="makePayment('GPay')">Google Pay</button>
+            <button onclick="makePayment('PhonePe')">PhonePe</button>
+            <button onclick="makePayment('Paytm')">Paytm</button>
+        </div>
+    </div>
+    
+    <section id="products">
+        <div class="product">
+            <h3>Product 1</h3>
+            <p>Price: ₹500</p>
+            <button onclick="addToCart('Product 1', 500)">Add to Cart</button>
+        </div>
+        <div class="product">
+            <h3>Product 2</h3>
+            <p>Price: ₹700</p>
+            <button onclick="addToCart('Product 2', 700)">Add to Cart</button>
+        </div>
+    </section>
+    
+    <script>
+        let cart = [];
+        const shopNumber = "9876543210"; // Shop owner's number
+        function toggleCart() {
+            let cartElement = document.getElementById('cart');
+            cartElement.style.display = (cartElement.style.display === 'none' || cartElement.style.display === '') ? 'block' : 'none';
+        }
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            updateCart();
+        }
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            cartItems.innerHTML = '';
+            cart.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.textContent = `${item.name} - ₹${item.price}`;
+                const removeBtn = document.createElement('button');
+                removeBtn.textContent = 'X';
+                removeBtn.onclick = () => { removeFromCart(index); };
+                li.appendChild(removeBtn);
+                cartItems.appendChild(li);
+            });
+        }
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+        function showPaymentOptions() {
+            if (cart.length === 0) {
+                alert('Your cart is empty. Add items before proceeding to buy.');
+                return;
+            }
+            document.getElementById('payment-options').style.display = 'block';
+        }
+        function makePayment(method) {
+            let amount = cart.reduce((sum, item) => sum + item.price, 0);
+            let paymentLinks = {
+                'GPay': `upi://pay?pa=${shopNumber}@upi&pn=ShopOwner&am=${amount}&cu=INR`,
+                'PhonePe': `phonepe://pay?pa=${shopNumber}@ybl&pn=ShopOwner&am=${amount}&cu=INR`,
+                'Paytm': `paytm://upi/pay?pa=${shopNumber}@paytm&pn=ShopOwner&am=${amount}&cu=INR`
+            };
+            window.location.href = paymentLinks[method];
+        }
+    </script>
+</body>
+</html>
