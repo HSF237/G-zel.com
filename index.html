@@ -3,220 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guzel - Men's Fashion</title>
+    <title>Guzel Mens-Wear</title>
     <style>
-        /* General Styling */
         body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #e8f5e9;
+            color: #2e7d32;
             text-align: center;
-            background: #1a1a1a;
-            color: #fff;
         }
-
-        /* Header */
-        header {
-            background: #111;
-            color: #85e085;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .navbar {
+            background-color: #2e7d32;
+            padding: 10px;
         }
-
-        #cart-icon {
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 18px;
+        }
+        .navbar a:hover {
+            background-color: white;
+            color: #2e7d32;
+            border-radius: 5px;
+        }
+        .container {
+            margin: 20px;
+        }
+        .button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
             cursor: pointer;
-            font-size: 1.5rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #2e7d32;
+            color: white;
+            transition: 0.3s;
         }
-
-        /* Cart */
-        #cart {
-            position: fixed;
-            right: 0;
-            top: 60px;
-            background: #222;
-            padding: 15px;
-            border-left: 3px solid #66cc66;
-            display: none;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
-            width: 250px;
+        .button:hover {
+            background-color: white;
+            color: #2e7d32;
+            box-shadow: 0px 0px 10px #2e7d32;
         }
-
-        /* Product Cards */
-        .products-container {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 20px;
+        .cart-buttons {
             margin-top: 20px;
         }
-
-        .product {
-            background: #222;
-            border-radius: 10px;
-            box-shadow: 0px 0px 15px rgba(0, 255, 0, 0.3);
-            padding: 20px;
-            text-align: center;
-            width: 250px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            cursor: pointer;
+        .cart {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
         }
-
-        .product:hover {
-            transform: scale(1.05);
-            box-shadow: 0px 0px 25px rgba(0, 255, 0, 0.5);
-        }
-
-        /* Payment Modal */
-        #payment-options {
+        .payment-buttons {
             display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #222;
-            padding: 20px;
-            border: 2px solid #66cc66;
-            box-shadow: 0px 0px 15px rgba(0, 255, 0, 0.3);
-            width: 300px;
-            text-align: center;
-            border-radius: 10px;
-        }
-
-        .close-btn {
-            background: red;
-            color: white;
-            border: none;
-            padding: 8px;
-            cursor: pointer;
-            border-radius: 5px;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-
-        /* About Section */
-        #about-section {
-            display: none;
-            padding: 20px;
-            background: #222;
-            border-radius: 10px;
-            margin: 20px;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Guzel - Men's Wear</h1>
-        <div>
-            <button onclick="showProducts()">Product</button>
-            <button onclick="showAbout()">About</button>
-            <button onclick="contactWhatsApp()">Contact</button>
-        </div>
-        <div id="cart-icon" onclick="toggleCart()">🛒</div>
-    </header>
 
-    <div id="cart">
-        <h2>Your Cart</h2>
-        <ul id="cart-items"></ul>
-        <p id="total-amount">Total: ₹0</p>
-        <button onclick="showPaymentOptions()">Checkout</button>
+    <div class="navbar">
+        <a href="#" onclick="showAbout()">About</a>
+        <a href="https://wa.me/yourwhatsappnumber" target="_blank">Contact</a>
+        <a href="#" onclick="showProducts()">Products</a>
     </div>
 
-    <!-- Payment Modal -->
-    <div id="payment-options">
-        <button class="close-btn" onclick="closePaymentModal()">X</button>
-        <h2>Choose Payment</h2>
-        <p id="pay-total">Total Amount: ₹0</p>
-        <button onclick="makePayment('gpay')">Google Pay</button>
-        <button onclick="makePayment('phonepe')">PhonePe</button>
-        <button onclick="makePayment('paytm')">Paytm</button>
+    <div class="container">
+        <h1>Welcome to Guzel Mens-Wear</h1>
+        <p>Your one-stop shop for stylish men's shirts!</p>
+
+        <div id="about" style="display: none;">
+            <h2>About Our Products</h2>
+            <p>We offer high-quality, stylish men's shirts in various designs and colors.</p>
+        </div>
+
+        <div id="products" style="display: none;">
+            <h2>Our Products</h2>
+            <div>
+                <p>Formal Shirt - $20</p>
+                <button class="button" onclick="addToCart(20)">Add to Cart</button>
+            </div>
+            <div>
+                <p>Casual Shirt - $15</p>
+                <button class="button" onclick="addToCart(15)">Add to Cart</button>
+            </div>
+            <div>
+                <p>Party Wear Shirt - $25</p>
+                <button class="button" onclick="addToCart(25)">Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="cart-buttons">
+            <button class="button" onclick="showCart()">Cart</button>
+            <button class="button" onclick="proceedToBuy()">Proceed to Buy</button>
+        </div>
+
+        <div id="cart" class="cart" style="display: none;">Total Amount: $<span id="totalAmount">0</span></div>
+
+        <div class="payment-buttons" id="paymentOptions">
+            <button class="button" onclick="pay('Google Pay')">Google Pay</button>
+            <button class="button" onclick="pay('Paytm')">Paytm</button>
+            <button class="button" onclick="pay('PhonePe')">PhonePe</button>
+        </div>
     </div>
-
-    <!-- About Section -->
-    <div id="about-section">
-        <h2>About Our Products</h2>
-        <p>Guzel offers premium men's fashion, from stylish shirts and jackets to trendy sneakers.</p>
-    </div>
-
-    <!-- Products -->
-    <section id="products" class="products-container">
-        <div class="product">
-            <h3>Black Shirt</h3>
-            <p>Price: ₹1200</p>
-            <button onclick="addToCart('Black Shirt', 1200)">Add to Cart</button>
-        </div>
-
-        <div class="product">
-            <h3>Green Jacket</h3>
-            <p>Price: ₹2500</p>
-            <button onclick="addToCart('Green Jacket', 2500)">Add to Cart</button>
-        </div>
-
-        <div class="product">
-            <h3>Stylish Sneakers</h3>
-            <p>Price: ₹3000</p>
-            <button onclick="addToCart('Stylish Sneakers', 3000)">Add to Cart</button>
-        </div>
-    </section>
 
     <script>
-        let cart = [];
         let totalAmount = 0;
 
-        function toggleCart() {
-            let cartElement = document.getElementById('cart');
-            cartElement.style.display = cartElement.style.display === 'none' ? 'block' : 'none';
-        }
-
-        function addToCart(name, price) {
-            cart.push({ name, price });
-            totalAmount += price;
-            updateCart();
-        }
-
-        function updateCart() {
-            const cartItems = document.getElementById('cart-items');
-            const totalAmountElement = document.getElementById('total-amount');
-            cartItems.innerHTML = '';
-            cart.forEach(item => {
-                const li = document.createElement('li');
-                li.textContent = `${item.name} - ₹${item.price}`;
-                cartItems.appendChild(li);
-            });
-            totalAmountElement.textContent = `Total: ₹${totalAmount}`;
-        }
-
-        function showPaymentOptions() {
-            document.getElementById('payment-options').style.display = 'block';
-            document.getElementById('pay-total').textContent = `Total Amount: ₹${totalAmount}`;
-        }
-
-        function closePaymentModal() {
-            document.getElementById('payment-options').style.display = 'none';
-        }
-
-        function makePayment(method) {
-            let upiID = method === 'gpay' ? "9048683929@okhdfcbank" :
-                        method === 'phonepe' ? "9048683929@ybl" :
-                        "9048683929@paytm";
-            window.location.href = `upi://pay?pa=${upiID}&pn=Guzel&am=${totalAmount}&cu=INR`;
-        }
-
         function showAbout() {
-            document.getElementById('about-section').style.display = 'block';
-            document.getElementById('products').style.display = 'none';
+            document.getElementById("about").style.display = "block";
+            document.getElementById("products").style.display = "none";
         }
 
         function showProducts() {
-            document.getElementById('products').style.display = 'flex';
-            document.getElementById('about-section').style.display = 'none';
+            document.getElementById("about").style.display = "none";
+            document.getElementById("products").style.display = "block";
         }
 
-        function contactWhatsApp() {
-            window.location.href = "https://wa.me/919048683929?text=Hello%20Guzel%20Team!";
+        function addToCart(price) {
+            totalAmount += price;
+            alert("Product added to cart!");
+        }
+
+        function showCart() {
+            document.getElementById("cart").style.display = "block";
+            document.getElementById("totalAmount").innerText = totalAmount;
+        }
+
+        function proceedToBuy() {
+            if (totalAmount === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+            document.getElementById("paymentOptions").style.display = "block";
+        }
+
+        function pay(method) {
+            let url = "";
+            if (method === "Google Pay") {
+                url = "https://pay.google.com/";
+            } else if (method === "Paytm") {
+                url = "https://paytm.com/";
+            } else if (method === "PhonePe") {
+                url = "https://www.phonepe.com/";
+            }
+            window.open(url, "_blank");
         }
     </script>
+
 </body>
 </html>
