@@ -30,6 +30,23 @@
             font-size: 1.5rem;
         }
 
+        /* Buttons in Header */
+        header div button {
+            background: #66cc66;
+            color: black;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        header div button:hover {
+            background: #4da64d;
+            color: #fff;
+        }
+
         /* Cart */
         #cart {
             position: fixed;
@@ -115,21 +132,35 @@
             transform: scale(1.05);
             box-shadow: 4px 8px 15px rgba(0, 255, 0, 0.5);
         }
+
+        /* About Section */
+        #about-section {
+            display: none;
+            padding: 20px;
+            background: #222;
+            border-radius: 10px;
+            margin: 20px;
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>Guzel - Men's Wear</h1>
+        <div>
+            <button onclick="showProducts()">Product</button>
+            <button onclick="showAbout()">About</button>
+            <button onclick="contactWhatsApp()">Contact</button>
+        </div>
         <div id="cart-icon" onclick="toggleCart()">🛒</div>
     </header>
-    
+
     <div id="cart">
         <h2>Your Cart</h2>
         <ul id="cart-items"></ul>
         <p id="total-amount">Total: ₹0</p>
         <button onclick="showPaymentOptions()">Checkout</button>
     </div>
-    
+
     <!-- Payment Modal -->
     <div id="payment-options">
         <button class="close-btn" onclick="closePaymentModal()">X</button>
@@ -140,6 +171,12 @@
         <button onclick="makePayment('paytm')">Paytm</button>
     </div>
 
+    <!-- About Section -->
+    <div id="about-section">
+        <h2>About Our Products</h2>
+        <p>Guzel offers premium men's fashion, from stylish shirts and jackets to trendy sneakers. Our goal is to bring you high-quality clothing with a modern touch.</p>
+    </div>
+
     <!-- Products -->
     <section id="products">
         <div class="product" data-name="Black Shirt">
@@ -148,14 +185,14 @@
             <p>Price: ₹1200</p>
             <button onclick="addToCart('Black Shirt', 1200)">Add to Cart</button>
         </div>
-        
+
         <div class="product" data-name="Green Jacket">
             <img src="green-jacket.jpg" alt="Green Jacket">
             <h3>Green Jacket</h3>
             <p>Price: ₹2500</p>
             <button onclick="addToCart('Green Jacket', 2500)">Add to Cart</button>
         </div>
-        
+
         <div class="product" data-name="Stylish Sneakers">
             <img src="sneakers.jpg" alt="Stylish Sneakers">
             <h3>Stylish Sneakers</h3>
@@ -205,38 +242,18 @@
             totalAmountElement.textContent = `Total: ₹${totalAmount}`;
         }
 
-        function removeFromCart(index, price) {
-            let item = cart[index];
-
-            if (item.quantity > 1) {
-                item.quantity -= 1;
-                item.totalPrice -= price;
-            } else {
-                cart.splice(index, 1);
-            }
-
-            totalAmount -= price;
-            updateCart();
+        function showProducts() {
+            document.getElementById('about-section').style.display = 'none';
+            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function showPaymentOptions() {
-            if (cart.length === 0) {
-                alert('Your cart is empty.');
-                return;
-            }
-            document.getElementById('pay-total').textContent = `Total Amount: ₹${totalAmount}`;
-            document.getElementById('payment-options').style.display = 'block';
+        function showAbout() {
+            document.getElementById('about-section').style.display = 'block';
+            document.getElementById('about-section').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function closePaymentModal() {
-            document.getElementById('payment-options').style.display = 'none';
-        }
-
-        function makePayment(method) {
-            let upiId = "8086549517@upi";
-            let upiUrl = `upi://pay?pa=${upiId}&pn=Guzel&am=${totalAmount}&cu=INR`;
-
-            window.location.href = upiUrl;
+        function contactWhatsApp() {
+            window.location.href = "https://wa.me/yourwhatsappnumber";
         }
     </script>
 </body>
