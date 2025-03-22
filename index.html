@@ -3,180 +3,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>guzel days</title>
+    <title>Guzel - Men's Fashion</title>
     <style>
+        /* General Styling */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
             text-align: center;
-            background: linear-gradient(to right, #ffafbd, #ffc3a0);
-            animation: fadeIn 1.5s ease-in;
+            background: #1a1a1a;
+            color: #fff;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+
+        /* Header */
         header {
-            background: #333;
-            color: white;
-            padding: 15px;
+            background: #111;
+            color: #85e085;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-            animation: slideDown 1s ease-in-out;
         }
-        @keyframes slideDown {
-            from { transform: translateY(-100%); }
-            to { transform: translateY(0); }
-        }
+
         #cart-icon {
             cursor: pointer;
-            transition: transform 0.3s;
+            font-size: 1.5rem;
         }
-        #cart-icon:hover {
-            transform: scale(1.2);
-        }
+
+        /* Cart */
         #cart {
             position: fixed;
             right: 0;
             top: 60px;
-            background: white;
+            background: #222;
             padding: 15px;
-            border: 1px solid #ccc;
+            border-left: 3px solid #66cc66;
             display: none;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-            animation: fadeIn 0.5s;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+            width: 250px;
         }
-        .product {
-            border: 1px solid #ddd;
-            margin: 15px;
-            padding: 15px;
-            display: inline-block;
-            background: white;
-            box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s, box-shadow 0.3s;
-            animation: popIn 0.5s ease-in-out;
+
+        #cart h2, #total-amount {
+            margin-bottom: 10px;
         }
-        .product img {
-            width: 100px;
-            height: auto;
-            display: block;
-            margin: 0 auto 10px;
-        }
-        .product:hover {
-            transform: scale(1.05);
-            box-shadow: 4px 8px 12px rgba(0, 0, 0, 0.3);
-        }
-        @keyframes popIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-        button {
-            background: #28a745;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background 0.3s;
-        }
-        button:hover {
-            background: #218838;
-        }
+
+        /* Payment Modal */
         #payment-options {
             display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: white;
+            background: #222;
             padding: 20px;
-            border: 1px solid #ccc;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
-            animation: fadeIn 0.5s;
+            border: 2px solid #66cc66;
+            box-shadow: 0px 0px 15px rgba(0, 255, 0, 0.3);
+            width: 300px;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .close-btn {
+            background: red;
+            color: white;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 5px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        /* Buttons */
+        button {
+            background: #66cc66;
+            color: black;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #4da64d;
+            color: #fff;
+        }
+
+        /* Product Styling */
+        .product {
+            border: 2px solid #66cc66;
+            margin: 20px;
+            padding: 20px;
+            display: inline-block;
+            background: #222;
+            border-radius: 10px;
+            box-shadow: 3px 5px 10px rgba(0, 255, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product img {
+            width: 120px;
+            height: auto;
+            display: block;
+            margin: 0 auto 10px;
+            border-radius: 5px;
+        }
+
+        .product:hover {
+            transform: scale(1.05);
+            box-shadow: 4px 8px 15px rgba(0, 255, 0, 0.5);
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>guzel days</h1>
-        <input type="text" id="search-bar" placeholder="Search for products..." onkeyup="searchProducts()">
+        <h1>Guzel - Men's Wear</h1>
         <div id="cart-icon" onclick="toggleCart()">🛒</div>
     </header>
     
     <div id="cart">
-        <h2>Shopping Cart</h2>
+        <h2>Your Cart</h2>
         <ul id="cart-items"></ul>
-        <button onclick="showPaymentOptions()">Proceed to Buy</button>
+        <p id="total-amount">Total: ₹0</p>
+        <button onclick="showPaymentOptions()">Checkout</button>
     </div>
     
+    <!-- Payment Modal -->
     <div id="payment-options">
-        <h2>Select Payment Method</h2>
-        <div class="payment-options">
-            <button onclick="makePayment('GPay')">Google Pay</button>
-            <button onclick="makePayment('PhonePe')">PhonePe</button>
-            <button onclick="makePayment('Paytm')">Paytm</button>
-        </div>
+        <button class="close-btn" onclick="closePaymentModal()">X</button>
+        <h2>Choose Payment</h2>
+        <p id="pay-total">Total Amount: ₹0</p>
+        <button onclick="makePayment('gpay')">Google Pay</button>
+        <button onclick="makePayment('phonepe')">PhonePe</button>
+        <button onclick="makePayment('paytm')">Paytm</button>
     </div>
-    
+
+    <!-- Products -->
     <section id="products">
-        <div class="product" data-name="Product 1">
-            <img src="Untitled-1.png" alt="Product 1">
-            <h3>Product 1</h3>
-            <p>Price: ₹500</p>
-            <button onclick="addToCart('Product 1', 500)">Add to Cart</button>
+        <div class="product" data-name="Black Shirt">
+            <img src="black-shirt.jpg" alt="Black Shirt">
+            <h3>Black Shirt</h3>
+            <p>Price: ₹1200</p>
+            <button onclick="addToCart('Black Shirt', 1200)">Add to Cart</button>
         </div>
-        <div class="product" data-name="Product 2">
-            <img src="product2.jpg" alt="Product 2">
-            <h3>Product 2</h3>
-            <p>Price: ₹700</p>
-            <button onclick="addToCart('Product 2', 700)">Add to Cart</button>
+        
+        <div class="product" data-name="Green Jacket">
+            <img src="green-jacket.jpg" alt="Green Jacket">
+            <h3>Green Jacket</h3>
+            <p>Price: ₹2500</p>
+            <button onclick="addToCart('Green Jacket', 2500)">Add to Cart</button>
+        </div>
+        
+        <div class="product" data-name="Stylish Sneakers">
+            <img src="sneakers.jpg" alt="Stylish Sneakers">
+            <h3>Stylish Sneakers</h3>
+            <p>Price: ₹3000</p>
+            <button onclick="addToCart('Stylish Sneakers', 3000)">Add to Cart</button>
         </div>
     </section>
-    
+
     <script>
         let cart = [];
+        let totalAmount = 0;
+
         function toggleCart() {
             let cartElement = document.getElementById('cart');
             cartElement.style.display = (cartElement.style.display === 'none' || cartElement.style.display === '') ? 'block' : 'none';
         }
+
         function addToCart(name, price) {
-            cart.push({ name, price });
+            let item = cart.find(item => item.name === name);
+
+            if (item) {
+                item.quantity += 1;
+                item.totalPrice += price;
+            } else {
+                cart.push({ name, price, quantity: 1, totalPrice: price });
+            }
+
+            totalAmount += price;
             updateCart();
         }
+
         function updateCart() {
             const cartItems = document.getElementById('cart-items');
+            const totalAmountElement = document.getElementById('total-amount');
             cartItems.innerHTML = '';
+
             cart.forEach((item, index) => {
                 const li = document.createElement('li');
-                li.textContent = `${item.name} - ₹${item.price}`;
+                li.textContent = `${item.name} (x${item.quantity}) - ₹${item.totalPrice}`;
                 const removeBtn = document.createElement('button');
                 removeBtn.textContent = 'X';
-                removeBtn.onclick = () => { removeFromCart(index); };
+                removeBtn.onclick = () => { removeFromCart(index, item.price); };
                 li.appendChild(removeBtn);
                 cartItems.appendChild(li);
             });
+
+            totalAmountElement.textContent = `Total: ₹${totalAmount}`;
         }
-        function removeFromCart(index) {
-            cart.splice(index, 1);
+
+        function removeFromCart(index, price) {
+            let item = cart[index];
+
+            if (item.quantity > 1) {
+                item.quantity -= 1;
+                item.totalPrice -= price;
+            } else {
+                cart.splice(index, 1);
+            }
+
+            totalAmount -= price;
             updateCart();
         }
+
         function showPaymentOptions() {
             if (cart.length === 0) {
-                alert('Your cart is empty. Add items before proceeding to buy.');
+                alert('Your cart is empty.');
                 return;
             }
+            document.getElementById('pay-total').textContent = `Total Amount: ₹${totalAmount}`;
             document.getElementById('payment-options').style.display = 'block';
         }
-        function searchProducts() {
-            let query = document.getElementById('search-bar').value.toLowerCase();
-            let products = document.querySelectorAll('.product');
-            products.forEach(product => {
-                let name = product.getAttribute('data-name').toLowerCase();
-                product.style.display = name.includes(query) ? 'inline-block' : 'none';
-            });
+
+        function closePaymentModal() {
+            document.getElementById('payment-options').style.display = 'none';
+        }
+
+        function makePayment(method) {
+            let upiId = "8086549517@upi";
+            let upiUrl = `upi://pay?pa=${upiId}&pn=Guzel&am=${totalAmount}&cu=INR`;
+
+            window.location.href = upiUrl;
         }
     </script>
 </body>
