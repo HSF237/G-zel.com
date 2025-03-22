@@ -30,23 +30,6 @@
             font-size: 1.5rem;
         }
 
-        /* Buttons in Header */
-        header div button {
-            background: #66cc66;
-            color: black;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-
-        header div button:hover {
-            background: #4da64d;
-            color: #fff;
-        }
-
         /* Cart */
         #cart {
             position: fixed;
@@ -60,8 +43,20 @@
             width: 250px;
         }
 
-        #cart h2, #total-amount {
+        #cart-items li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 10px;
+        }
+
+        .remove-btn {
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
         }
 
         /* Payment Modal */
@@ -80,18 +75,6 @@
             border-radius: 10px;
         }
 
-        .close-btn {
-            background: red;
-            color: white;
-            border: none;
-            padding: 8px;
-            cursor: pointer;
-            border-radius: 5px;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-
         /* Buttons */
         button {
             background: #66cc66;
@@ -103,34 +86,16 @@
             font-weight: bold;
         }
 
-        button:hover {
-            background: #4da64d;
-            color: #fff;
-        }
-
-        /* Product Styling */
-        .product {
-            border: 2px solid #66cc66;
-            margin: 20px;
-            padding: 20px;
-            display: inline-block;
-            background: #222;
-            border-radius: 10px;
-            box-shadow: 3px 5px 10px rgba(0, 255, 0, 0.3);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .product img {
-            width: 120px;
-            height: auto;
-            display: block;
-            margin: 0 auto 10px;
+        .close-btn {
+            background: red;
+            color: white;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
             border-radius: 5px;
-        }
-
-        .product:hover {
-            transform: scale(1.05);
-            box-shadow: 4px 8px 15px rgba(0, 255, 0, 0.5);
+            position: absolute;
+            top: 10px;
+            right: 10px;
         }
 
         /* About Section */
@@ -174,27 +139,24 @@
     <!-- About Section -->
     <div id="about-section">
         <h2>About Our Products</h2>
-        <p>Guzel offers premium men's fashion, from stylish shirts and jackets to trendy sneakers. Our goal is to bring you high-quality clothing with a modern touch.</p>
+        <p>Guzel offers premium men's fashion, from stylish shirts and jackets to trendy sneakers.</p>
     </div>
 
     <!-- Products -->
     <section id="products">
-        <div class="product" data-name="Black Shirt">
-            <img src="black-shirt.jpg" alt="Black Shirt">
+        <div class="product">
             <h3>Black Shirt</h3>
             <p>Price: ₹1200</p>
             <button onclick="addToCart('Black Shirt', 1200)">Add to Cart</button>
         </div>
 
-        <div class="product" data-name="Green Jacket">
-            <img src="green-jacket.jpg" alt="Green Jacket">
+        <div class="product">
             <h3>Green Jacket</h3>
             <p>Price: ₹2500</p>
             <button onclick="addToCart('Green Jacket', 2500)">Add to Cart</button>
         </div>
 
-        <div class="product" data-name="Stylish Sneakers">
-            <img src="sneakers.jpg" alt="Stylish Sneakers">
+        <div class="product">
             <h3>Stylish Sneakers</h3>
             <p>Price: ₹3000</p>
             <button onclick="addToCart('Stylish Sneakers', 3000)">Add to Cart</button>
@@ -207,19 +169,17 @@
 
         function toggleCart() {
             let cartElement = document.getElementById('cart');
-            cartElement.style.display = (cartElement.style.display === 'none' || cartElement.style.display === '') ? 'block' : 'none';
+            cartElement.style.display = cartElement.style.display === 'none' || cartElement.style.display === '' ? 'block' : 'none';
         }
 
         function addToCart(name, price) {
             let item = cart.find(item => item.name === name);
-
             if (item) {
                 item.quantity += 1;
                 item.totalPrice += price;
             } else {
                 cart.push({ name, price, quantity: 1, totalPrice: price });
             }
-
             totalAmount += price;
             updateCart();
         }
@@ -234,6 +194,7 @@
                 li.textContent = `${item.name} (x${item.quantity}) - ₹${item.totalPrice}`;
                 const removeBtn = document.createElement('button');
                 removeBtn.textContent = 'X';
+                removeBtn.className = 'remove-btn';
                 removeBtn.onclick = () => removeFromCart(item.name);
                 li.appendChild(removeBtn);
                 cartItems.appendChild(li);
@@ -246,14 +207,36 @@
             let itemIndex = cart.findIndex(item => item.name === name);
             if (itemIndex !== -1) {
                 let item = cart[itemIndex];
-                item.quantity > 1 ? item.quantity-- : cart.splice(itemIndex, 1);
                 totalAmount -= item.price;
+                if (item.quantity > 1) {
+                    item.quantity--;
+                    item.totalPrice -= item.price;
+                } else {
+                    cart.splice(itemIndex, 1);
+                }
                 updateCart();
             }
         }
 
-        function makePayment() {
-            window.location.href = `upi://pay?pa=8086549517@upi&pn=Guzel&am=${totalAmount}&cu=INR`;
+        function showPaymentOptions() {
+            document.getElementById('payment-options').style.display = 'block';
+            document.getElementById('pay-total').textContent = `Total Amount: ₹${totalAmount}`;
+        }
+
+        function closePaymentModal() {
+            document.getElementById('payment-options').style.display = 'none';
+        }
+
+        function makePayment(method) {
+            let upiID;
+            if (method === 'gpay') {
+                upiID = "9048683929@upi";
+            } else if (method === 'phonepe') {
+                upiID = "9048683929@ybl";
+            } else if (method === 'paytm') {
+                upiID = "9048683929@paytm";
+            }
+            window.location.href = `upi://pay?pa=${upiID}&pn=Guzel&am=${totalAmount}&cu=INR`;
         }
     </script>
 </body>
