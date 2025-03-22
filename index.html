@@ -96,7 +96,7 @@
 <body>
     <header>
         <h1>guzel days</h1>
-        <input type="text" id="search-bar" placeholder="Search for products...">
+        <input type="text" id="search-bar" placeholder="Search for products..." onkeyup="searchProducts()">
         <div id="cart-icon" onclick="toggleCart()">🛒</div>
     </header>
     
@@ -116,22 +116,16 @@
     </div>
     
     <section id="products">
-        <div class="product"><data-name="white mens cotoon shirt">
-            <img src=Untitled-1.png>
+        <div class="product" data-name="white mens cotton shirt">
+            <img src="Untitled-1.png">
             <h3>white mens cotton shirt</h3>
-            <p>Price: ₹499</p>
-            <button onclick="addToCart('white mens cotton shirt', 499)">Add to Cart</button>
-        </div>
-        <div class="product">
-            <h3>Product 2</h3>
-            <p>Price: ₹700</p>
-            <button onclick="addToCart('Product 2', 700)">Add to Cart</button>
+            <p>Price: ₹500</p>
+            <button onclick="addToCart('white mens cotton shirt', 500)">Add to Cart</button>
         </div>
     </section>
     
     <script>
         let cart = [];
-        const shopNumber = "9745544623"; // Shop owner's number
         function toggleCart() {
             let cartElement = document.getElementById('cart');
             cartElement.style.display = (cartElement.style.display === 'none' || cartElement.style.display === '') ? 'block' : 'none';
@@ -163,6 +157,14 @@
                 return;
             }
             document.getElementById('payment-options').style.display = 'block';
+        }
+        function searchProducts() {
+            let query = document.getElementById('search-bar').value.toLowerCase();
+            let products = document.querySelectorAll('.product');
+            products.forEach(product => {
+                let name = product.getAttribute('data-name').toLowerCase();
+                product.style.display = name.includes(query) ? 'inline-block' : 'none';
+            });
         }
     </script>
 </body>
