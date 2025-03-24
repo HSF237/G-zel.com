@@ -3,95 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guzel Days - Online Store</title>
+    <title>Güzel Men's Wear - Online Store</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             text-align: center;
-            background: linear-gradient(to right, #8EBC8E, #A4C3A5); /* Olive Green theme */
-            animation: fadeIn 1.5s ease-in;
+            background: linear-gradient(to right, #6B8E23, #f5f5f5);
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
         header {
-            background: #333;
+            background: #556b2f;
             color: white;
             padding: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
-        #search-bar {
-            padding: 5px;
-            width: 200px;
+        #cart-icon {
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.3s;
         }
-
+        #cart-icon:hover {
+            transform: scale(1.2);
+        }
+        input {
+            padding: 8px;
+            width: 250px;
+            border-radius: 5px;
+            border: 1px solid #6B8E23;
+        }
         .container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             padding: 20px;
         }
-
         .product {
-            border: 1px solid #ddd;
+            border: 2px solid #6B8E23;
             margin: 15px;
             padding: 15px;
-            width: 250px;
+            width: 260px;
             background: white;
-            box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s;
+            box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 10px;
             position: relative;
-            border-radius: 8px;
+            animation: fadeIn 0.5s ease-in-out;
         }
-
         .product:hover {
-            transform: scale(1.05);
+            transform: scale(1.08);
+            box-shadow: 0 0 20px #6B8E23;
         }
-
-        .cart-button, .buy-button {
-            background: #ff4081;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .cart-button, .buy-button, #proceed-button {
+            background: #556b2f;
             color: white;
             border: none;
             padding: 10px;
             margin: 5px;
             cursor: pointer;
             border-radius: 5px;
-            transition: 0.3s;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px #6B8E23;
         }
-
-        .cart-button:hover, .buy-button:hover {
-            background: #e60073;
-            transform: scale(1.1);
+        .cart-button:hover, .buy-button:hover, #proceed-button:hover {
+            background: #a4c639;
+            box-shadow: 0 0 20px #a4c639;
+            transform: scale(1.05);
         }
-
+        #cart {
+            display: none;
+            position: fixed;
+            top: 60px;
+            right: 10px;
+            width: 300px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 5px;
+            z-index: 1000;
+        }
         .image-slider {
             position: relative;
             width: 100%;
-            height: 200px; /* Adjusted height */
+            height: 180px;
             overflow: hidden;
-            border-radius: 5px;
         }
-
         .image-slider img {
             width: 100%;
-            height: 100%; /* Ensures the image fits properly */
-            object-fit: cover; /* Ensures the image maintains aspect ratio while filling the container */
-            position: absolute;
-            opacity: 0;
+            height: 180px;
+            display: none;
         }
-
         .image-slider img.active {
-            opacity: 1;
+            display: block;
+            animation: fadeImage 0.5s;
         }
-
+        @keyframes fadeImage {
+            from { opacity: 0.5; }
+            to { opacity: 1; }
+        }
         .slider-btn {
             position: absolute;
             top: 50%;
@@ -99,169 +114,111 @@
             background: rgba(0, 0, 0, 0.5);
             color: white;
             border: none;
-            padding: 5px;
+            padding: 10px;
             cursor: pointer;
+            font-size: 20px;
             border-radius: 50%;
-            transition: 0.3s;
+            transition: background 0.3s ease;
+            z-index: 10;
         }
 
         .slider-btn:hover {
             background: rgba(0, 0, 0, 0.8);
         }
 
-        .prev { left: 5px; }
-        .next { right: 5px; }
-
-        /* Cart modal */
-        .cart-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
+        .prev {
+            left: 5px; /* Adjusted for proper positioning */
         }
 
-        .cart-modal-content {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            width: 300px;
-            text-align: left;
+        .next {
+            right: 5px; /* Adjusted for proper positioning */
         }
 
-        .close-cart {
-            cursor: pointer;
-            padding: 10px;
-            background: #ff4081;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            transition: 0.3s;
-        }
-
-        .close-cart:hover {
-            background: #e60073;
-        }
-
-        .cart-items {
-            list-style: none;
-            padding: 0;
-        }
-
-        .cart-items li {
-            margin-bottom: 10px;
-        }
-
-        .cart-total {
-            margin-top: 20px;
-            font-weight: bold;
-        }
     </style>
 </head>
 <body>
     <header>
-        <h1>Guzel Days</h1>
-        <input type="text" id="search-bar" placeholder="Search for products..." onkeyup="searchProducts()">
-        <button onclick="toggleCart()">🛒 Cart</button>
+        <h1>Güzel Men's Wear</h1>
+        <input type="text" id="search-bar" onkeyup="searchProducts()" placeholder="Search for products...">
+        <span id="cart-icon" onclick="toggleCart()">🛒</span>
     </header>
-
-    <section class="container" id="products">
-        <div class="product" data-name="Product 1">
-            <div class="image-slider">
-                <img src="Untitled-1.png" class="active">
-                <img src="image2.jpg">
-                <img src="image3.jpg">
-                <button class="slider-btn prev" onclick="prevImage(this)">&lt;</button>
-                <button class="slider-btn next" onclick="nextImage(this)">&gt;</button>
-            </div>
-            <h3>Product 1</h3>
-            <p>Price: ₹500</p>
-            <button class="cart-button" onclick="addToCart('Product 1', 500)">Add to Cart</button>
-            <button class="buy-button" onclick="buyNow('Product 1', 500)">Buy Now</button>
-        </div>
-    </section>
-
-    <!-- Cart Modal -->
-    <div class="cart-modal" id="cart-modal">
-        <div class="cart-modal-content">
-            <h2>Your Cart</h2>
-            <ul class="cart-items" id="cart-items"></ul>
-            <div class="cart-total" id="cart-total">Total: ₹0</div>
-            <button class="close-cart" onclick="closeCart()">Close</button>
-        </div>
+    
+    <div id="cart">
+        <h2>Shopping Cart</h2>
+        <ul id="cart-items"></ul>
+        <button id="proceed-button" onclick="goToWhatsAppCart()">Proceed to Buy</button>
     </div>
 
-    <script>
-        let cart = [];
-        
-        function prevImage(button) {
-            let images = button.parentElement.querySelectorAll("img");
-            let activeIndex = Array.from(images).findIndex(img => img.classList.contains("active"));
-            images[activeIndex].classList.remove("active");
-            images[(activeIndex - 1 + images.length) % images.length].classList.add("active");
-        }
+    <section class="container" id="products"></section>
 
-        function nextImage(button) {
-            let images = button.parentElement.querySelectorAll("img");
-            let activeIndex = Array.from(images).findIndex(img => img.classList.contains("active"));
-            images[activeIndex].classList.remove("active");
-            images[(activeIndex + 1) % images.length].classList.add("active");
-        }
-        
-        function addToCart(productName, price) {
-            cart.push({ name: productName, price: price });
-            alert(`${productName} added to cart for ₹${price}`);
-        }
-        
-        function buyNow(productName, price) {
-            let phoneNumber = "9745544623"; // Replace with your WhatsApp number
-            let message = `Hello, I want to buy ${productName} for ₹${price}.`;
-            let url = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
-            window.location.href = url;
+    <script>
+        const products = [
+            { name: "Leather Wallet", price: 800, desc: "Premium leather wallet.", images: ["Untitled-1.png", "garlic (1).webp", "1_3.jpg", "1_4.jpg"] },
+            { name: "Men's Perfume", price: 1200, desc: "Long-lasting fragrance.", images: ["2.jpg", "2_2.jpg", "2_3.jpg", "2_4.jpg"] },
+            { name: "Casual Shirt", price: 900, desc: "Slim fit casual shirt.", images: ["3.jpg", "3_2.jpg", "3_3.jpg", "3_4.jpg"] },
+        ];
+
+        let cart = {};
+
+        function generateProducts() {
+            let productContainer = document.getElementById("products");
+            productContainer.innerHTML = "";
+            products.forEach((product, index) => {
+                let imagesHTML = product.images.map((img, i) => 
+                    `<img src="${img}" class="${i === 0 ? 'active' : ''}">`).join('');
+                
+                productContainer.innerHTML += `
+                    <div class="product">
+                        <div class="image-slider">
+                            ${imagesHTML}
+                            <button class="slider-btn prev" onclick="prevImage(this)">&lt;</button>
+                            <button class="slider-btn next" onclick="nextImage(this)">&gt;</button>
+                        </div>
+                        <h3>${product.name}</h3>
+                        <p>Price: ₹${product.price}</p>
+                        <button class="cart-button" onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
+                        <button class="buy-button" onclick="goToWhatsApp('${product.name}', ${product.price})">Buy Now</button>
+                    </div>
+                `;
+            });
         }
 
         function toggleCart() {
-            let cartModal = document.getElementById("cart-modal");
-            if (cartModal.style.display === "flex") {
-                cartModal.style.display = "none";
-            } else {
-                cartModal.style.display = "flex";
-                updateCart();
-            }
+            let cartElement = document.getElementById("cart");
+            cartElement.style.display = cartElement.style.display === "block" ? "none" : "block";
         }
 
-        function closeCart() {
-            document.getElementById("cart-modal").style.display = "none";
+        function addToCart(product, price) {
+            if (cart[product]) cart[product].quantity += 1;
+            else cart[product] = { price, quantity: 1 };
+            updateCart();
         }
 
         function updateCart() {
-            let cartItems = document.getElementById("cart-items");
-            let cartTotal = document.getElementById("cart-total");
-            cartItems.innerHTML = "";
-            let total = 0;
-            cart.forEach(item => {
-                let li = document.createElement("li");
-                li.textContent = `${item.name} - ₹${item.price}`;
-                cartItems.appendChild(li);
-                total += item.price;
+            let cartList = document.getElementById("cart-items");
+            cartList.innerHTML = "";
+            Object.keys(cart).forEach(item => {
+                cartList.innerHTML += `<li>${item} (x${cart[item].quantity}) - ₹${cart[item].price * cart[item].quantity}</li>`;
             });
-            cartTotal.textContent = `Total: ₹${total}`;
+        }
+
+        function goToWhatsApp(product, price) {
+            window.location.href = `https://wa.me/9745544623?text=I want to buy ${product} for ₹${price}.`;
+        }
+
+        function goToWhatsAppCart() {
+            window.location.href = `https://wa.me/9745544623?text=I want to buy items from my cart.`;
         }
 
         function searchProducts() {
             let input = document.getElementById("search-bar").value.toLowerCase();
-            let products = document.querySelectorAll(".product");
-            
-            products.forEach(product => {
-                let name = product.getAttribute("data-name").toLowerCase();
-                product.style.display = name.includes(input) ? "block" : "none";
+            document.querySelectorAll(".product").forEach(product => {
+                let title = product.querySelector("h3").textContent.toLowerCase();
+                product.style.display = title.includes(input) ? "block" : "none";
             });
         }
+
+        generateProducts();
     </script>
 </body>
 </html>
