@@ -10,9 +10,15 @@
             margin: 0;
             padding: 0;
             text-align: center;
-            background: linear-gradient(to right, #ffafbd, #ffc3a0);
+            background: linear-gradient(to right, #8EBC8E, #A4C3A5); /* Olive Green theme */
             animation: fadeIn 1.5s ease-in;
         }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         header {
             background: #333;
             color: white;
@@ -21,16 +27,19 @@
             justify-content: space-between;
             align-items: center;
         }
+
         #search-bar {
             padding: 5px;
             width: 200px;
         }
+
         .container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             padding: 20px;
         }
+
         .product {
             border: 1px solid #ddd;
             margin: 15px;
@@ -40,10 +49,13 @@
             box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s;
             position: relative;
+            border-radius: 8px;
         }
+
         .product:hover {
             transform: scale(1.05);
         }
+
         .cart-button, .buy-button {
             background: #ff4081;
             color: white;
@@ -52,52 +64,34 @@
             margin: 5px;
             cursor: pointer;
             border-radius: 5px;
+            transition: 0.3s;
         }
+
         .cart-button:hover, .buy-button:hover {
             background: #e60073;
+            transform: scale(1.1);
         }
-        #cart {
-            display: none;
-            position: fixed;
-            top: 50px;
-            right: 10px;
-            width: 250px;
-            background: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            padding: 15px;
-            border-radius: 5px;
-        }
-        #cart ul {
-            list-style: none;
-            padding: 0;
-        }
-        #cart li {
-            display: flex;
-            justify-content: space-between;
-            margin: 5px 0;
-        }
-        .remove-btn {
-            background: red;
-            color: white;
-            border: none;
-            padding: 5px;
-            cursor: pointer;
-            border-radius: 3px;
-        }
+
         .image-slider {
             position: relative;
             width: 100%;
-            height: 150px;
+            height: 200px; /* Adjusted height */
             overflow: hidden;
+            border-radius: 5px;
         }
+
         .image-slider img {
             width: 100%;
-            height: 150px;
-            display: none;
+            height: 100%; /* Ensures the image fits properly */
+            object-fit: cover; /* Ensures the image maintains aspect ratio while filling the container */
+            position: absolute;
+            opacity: 0;
         }
+
         .image-slider img.active {
-            display: block;
+            opacity: 1;
         }
+
         .slider-btn {
             position: absolute;
             top: 50%;
@@ -107,28 +101,75 @@
             border: none;
             padding: 5px;
             cursor: pointer;
+            border-radius: 50%;
+            transition: 0.3s;
         }
-        .prev {
-            left: 5px;
+
+        .slider-btn:hover {
+            background: rgba(0, 0, 0, 0.8);
         }
-        .next {
-            right: 5px;
+
+        .prev { left: 5px; }
+        .next { right: 5px; }
+
+        /* Cart modal */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .cart-modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            text-align: left;
+        }
+
+        .close-cart {
+            cursor: pointer;
+            padding: 10px;
+            background: #ff4081;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .close-cart:hover {
+            background: #e60073;
+        }
+
+        .cart-items {
+            list-style: none;
+            padding: 0;
+        }
+
+        .cart-items li {
+            margin-bottom: 10px;
+        }
+
+        .cart-total {
+            margin-top: 20px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <header>
         <h1>Guzel Days</h1>
-        <input type="text" id="search-bar" placeholder="Search for products...">
+        <input type="text" id="search-bar" placeholder="Search for products..." onkeyup="searchProducts()">
         <button onclick="toggleCart()">🛒 Cart</button>
     </header>
-    
-    <div id="cart">
-        <h2>Shopping Cart</h2>
-        <ul id="cart-items"></ul>
-        <button onclick="proceedToBuy()">Proceed to Buy</button>
-    </div>
-    
+
     <section class="container" id="products">
         <div class="product" data-name="Product 1">
             <div class="image-slider">
@@ -141,183 +182,23 @@
             <h3>Product 1</h3>
             <p>Price: ₹500</p>
             <button class="cart-button" onclick="addToCart('Product 1', 500)">Add to Cart</button>
-            <button class="buy-button" onclick="showPaymentOptions()">Buy Now</button>
-        </div>
-                <div class="product" data-name="Product 1">
-            <div class="image-slider">
-                <img src="image1.jpg" class="active">
-                <img src="image2.jpg">
-                <img src="image3.jpg">
-                <button class="slider-btn prev" onclick="prevImage(this)">&lt;</button>
-                <button class="slider-btn next" onclick="nextImage(this)">&gt;</button>
-            </div>
-            <h3>Product 1</h3>
-            <p>Price: ₹500</p>
-            <button class="cart-button" onclick="addToCart('Product 1', 500)">Add to Cart</button>
-            <button class="buy-button" onclick="showPaymentOptions()">Buy Now</button>
-        </div>
-                <div class="product" data-name="Product 1">
-            <div class="image-slider">
-                <img src="image1.jpg" class="active">
-                <img src="image2.jpg">
-                <img src="image3.jpg">
-                <button class="slider-btn prev" onclick="prevImage(this)">&lt;</button>
-                <button class="slider-btn next" onclick="nextImage(this)">&gt;</button>
-            </div>
-            <h3>Product 1</h3>
-            <p>Price: ₹500</p>
-            <button class="cart-button" onclick="addToCart('Product 1', 500)">Add to Cart</button>
-            <button class="buy-button" onclick="showPaymentOptions()">Buy Now</button>
-        </div>
-                <div class="product" data-name="Product 1">
-            <div class="image-slider">
-                <img src="image1.jpg" class="active">
-                <img src="image2.jpg">
-                <img src="image3.jpg">
-                <button class="slider-btn prev" onclick="prevImage(this)">&lt;</button>
-                <button class="slider-btn next" onclick="nextImage(this)">&gt;</button>
-            </div>
-            <h3>Product 1</h3>
-            <p>Price: ₹500</p>
-            <button class="cart-button" onclick="addToCart('Product 1', 500)">Add to Cart</button>
-            <button class="buy-button" onclick="showPaymentOptions()">Buy Now</button>
-        </div>
-                <div class="product" data-name="Product 1">
-            <div class="image-slider">
-                <img src="image1.jpg" class="active">
-                <img src="image2.jpg">
-                <img src="image3.jpg">
-                <button class="slider-btn prev" onclick="prevImage(this)">&lt;</button>
-                <button class="slider-btn next" onclick="nextImage(this)">&gt;</button>
-            </div>
-            <h3>Product 1</h3>
-            <p>Price: ₹500</p>
-            <button class="cart-button" onclick="addToCart('Product 1', 500)">Add to Cart</button>
-            <button class="buy-button" onclick="showPaymentOptions()">Buy Now</button>
-        </div>
-                <div class="product" data-name="Product 1">
-            <div class="image-slider">
-                <img src="image1.jpg" class="active">
-                <img src="image2.jpg">
-                <img src="image3.jpg">
-                <button class="slider-btn prev" onclick="prevImage(this)">&lt;</button>
-                <button class="slider-btn next" onclick="nextImage(this)">&gt;</button>
-            </div>
-            <h3>Product 1</h3>
-            <p>Price: ₹500</p>
-            <button class="cart-button" onclick="addToCart('Product 1', 500)">Add to Cart</button>
-            <button class="buy-button" onclick="showPaymentOptions()">Buy Now</button>
-        </div>
-                <div class="product" data-name="Product 1">
-            <div class="image-slider">
-                <img src="image1.jpg" class="active">
-                <img src="image2.jpg">
-                <img src="image3.jpg">
-                <button class="slider-btn prev" onclick="prevImage(this)">&lt;</button>
-                <button class="slider-btn next" onclick="nextImage(this)">&gt;</button>
-            </div>
-            <h3>Product 1</h3>
-            <p>Price: ₹500</p>
-            <button class="cart-button" onclick="addToCart('Product 1', 500)">Add to Cart</button>
-            <button class="buy-button" onclick="showPaymentOptions()">Buy Now</button>
-        </div>
-                <div class="product" data-name="Product 1">
-            <div class="image-slider">
-                <img src="image1.jpg" class="active">
-                <img src="image2.jpg">
-                <img src="image3.jpg">
-                <button class="slider-btn prev" onclick="prevImage(this)">&lt;</button>
-                <button class="slider-btn next" onclick="nextImage(this)">&gt;</button>
-            </div>
-            <h3>Product 1</h3>
-            <p>Price: ₹500</p>
-            <button class="cart-button" onclick="addToCart('Product 1', 500)">Add to Cart</button>
-            <button class="buy-button" onclick="showPaymentOptions()">Buy Now</button>
-        </div>
-                <div class="product" data-name="Product 1">
-            <div class="image-slider">
-                <img src="image1.jpg" class="active">
-                <img src="image2.jpg">
-                <img src="image3.jpg">
-                <button class="slider-btn prev" onclick="prevImage(this)">&lt;</button>
-                <button class="slider-btn next" onclick="nextImage(this)">&gt;</button>
-            </div>
-            <h3>Product 1</h3>
-            <p>Price: ₹500</p>
-            <button class="cart-button" onclick="addToCart('Product 1', 500)">Add to Cart</button>
-            <button class="buy-button" onclick="showPaymentOptions()">Buy Now</button>
-        </div>
-                <div class="product" data-name="Product 1">
-            <div class="image-slider">
-                <img src="image1.jpg" class="active">
-                <img src="image2.jpg">
-                <img src="image3.jpg">
-                <button class="slider-btn prev" onclick="prevImage(this)">&lt;</button>
-                <button class="slider-btn next" onclick="nextImage(this)">&gt;</button>
-            </div>
-            <h3>Product 1</h3>
-            <p>Price: ₹500</p>
-            <button class="cart-button" onclick="addToCart('Product 1', 500)">Add to Cart</button>
-            <button class="buy-button" onclick="showPaymentOptions()">Buy Now</button>
+            <button class="buy-button" onclick="buyNow('Product 1', 500)">Buy Now</button>
         </div>
     </section>
-    
-    <div id="payment-options" style="display: none;">
-        <h2>Select Payment Method</h2>
-        <button onclick="enterPIN('Google Pay')">Google Pay</button>
-        <button onclick="enterPIN('PhonePe')">PhonePe</button>
-        <button onclick="enterPIN('Paytm')">Paytm</button>
+
+    <!-- Cart Modal -->
+    <div class="cart-modal" id="cart-modal">
+        <div class="cart-modal-content">
+            <h2>Your Cart</h2>
+            <ul class="cart-items" id="cart-items"></ul>
+            <div class="cart-total" id="cart-total">Total: ₹0</div>
+            <button class="close-cart" onclick="closeCart()">Close</button>
+        </div>
     </div>
-    
+
     <script>
         let cart = [];
-
-        function toggleCart() {
-            let cartElement = document.getElementById("cart");
-            cartElement.style.display = cartElement.style.display === "block" ? "none" : "block";
-        }
-
-        function addToCart(product, price) {
-            cart.push({ product, price });
-            updateCart();
-        }
-
-        function updateCart() {
-            let cartList = document.getElementById("cart-items");
-            cartList.innerHTML = "";
-            cart.forEach((item, index) => {
-                let li = document.createElement("li");
-                li.innerHTML = `${item.product} - ₹${item.price} <button class='remove-btn' onclick='removeFromCart(${index})'>X</button>`;
-                cartList.appendChild(li);
-            });
-        }
-
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            updateCart();
-        }
-
-        function proceedToBuy() {
-            showPaymentOptions();
-        }
-
-        function showPaymentOptions() {
-            document.getElementById("payment-options").style.display = "block";
-        }
-
-        function enterPIN(method) {
-            let pin = prompt("Enter your 4-digit PIN for " + method);
-            if (pin && pin.length === 4 && !isNaN(pin)) {
-                completePayment(method);
-            } else {
-                alert("Invalid PIN. Please try again.");
-            }
-        }
-
-        function completePayment(method) {
-            alert("Payment successful via " + method + "! Your order is placed.");
-        }
-
+        
         function prevImage(button) {
             let images = button.parentElement.querySelectorAll("img");
             let activeIndex = Array.from(images).findIndex(img => img.classList.contains("active"));
@@ -330,6 +211,56 @@
             let activeIndex = Array.from(images).findIndex(img => img.classList.contains("active"));
             images[activeIndex].classList.remove("active");
             images[(activeIndex + 1) % images.length].classList.add("active");
+        }
+        
+        function addToCart(productName, price) {
+            cart.push({ name: productName, price: price });
+            alert(`${productName} added to cart for ₹${price}`);
+        }
+        
+        function buyNow(productName, price) {
+            let phoneNumber = "918888888888"; // Replace with your WhatsApp number
+            let message = `Hello, I want to buy ${productName} for ₹${price}.`;
+            let url = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+            window.location.href = url;
+        }
+
+        function toggleCart() {
+            let cartModal = document.getElementById("cart-modal");
+            if (cartModal.style.display === "flex") {
+                cartModal.style.display = "none";
+            } else {
+                cartModal.style.display = "flex";
+                updateCart();
+            }
+        }
+
+        function closeCart() {
+            document.getElementById("cart-modal").style.display = "none";
+        }
+
+        function updateCart() {
+            let cartItems = document.getElementById("cart-items");
+            let cartTotal = document.getElementById("cart-total");
+            cartItems.innerHTML = "";
+            let total = 0;
+            cart.forEach(item => {
+                let li = document.createElement("li");
+                li.textContent = `${item.name} - ₹${item.price}`;
+                cartItems.appendChild(li);
+                total += item.price;
+            });
+            cartTotal.textContent = `Total: ₹${total}`;
+        }
+
+        function searchProducts() {
+            let input = document.getElementById("search-bar").value.toLowerCase();
+            let products = document.querySelectorAll(".product");
+            
+            products.forEach(product => {
+                let name = product.getAttribute("data-name").toLowerCase();
+                product.style.display = name.includes(input) ? "block" : "none";
+            });
         }
     </script>
 </body>
