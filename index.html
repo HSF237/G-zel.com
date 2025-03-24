@@ -173,7 +173,7 @@
     <section class="container" id="products">
         <div class="product" data-name="Product 1">
             <div class="image-slider">
-                <img src="image1.jpg" class="active">
+                <img src="Untitled-1.png" class="active">
                 <img src="image2.jpg">
                 <img src="image3.jpg">
                 <button class="slider-btn prev" onclick="prevImage(this)">&lt;</button>
@@ -219,7 +219,7 @@
         }
         
         function buyNow(productName, price) {
-            let phoneNumber = "918888888888"; // Replace with your WhatsApp number
+            let phoneNumber = "9745544623"; // Replace with your WhatsApp number
             let message = `Hello, I want to buy ${productName} for ₹${price}.`;
             let url = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
             window.location.href = url;
