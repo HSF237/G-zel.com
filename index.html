@@ -169,10 +169,10 @@
                 
                 productContainer.innerHTML += `
                     <div class="product">
-                        <div class="image-slider">
+                        <div class="image-slider" id="slider-${index}">
                             ${imagesHTML}
-                            <button class="slider-btn prev" onclick="prevImage(this)">&lt;</button>
-                            <button class="slider-btn next" onclick="nextImage(this)">&gt;</button>
+                            <button class="slider-btn prev" onclick="prevImage(${index})">&lt;</button>
+                            <button class="slider-btn next" onclick="nextImage(${index})">&gt;</button>
                         </div>
                         <h3>${product.name}</h3>
                         <p>Price: ₹${product.price}</p>
@@ -181,6 +181,24 @@
                     </div>
                 `;
             });
+        }
+
+        function prevImage(productIndex) {
+            let product = products[productIndex];
+            let images = document.querySelectorAll(`#slider-${productIndex} img`);
+            let activeImageIndex = Array.from(images).findIndex(img => img.classList.contains('active'));
+            images[activeImageIndex].classList.remove('active');
+            let prevImageIndex = (activeImageIndex - 1 + product.images.length) % product.images.length;
+            images[prevImageIndex].classList.add('active');
+        }
+
+        function nextImage(productIndex) {
+            let product = products[productIndex];
+            let images = document.querySelectorAll(`#slider-${productIndex} img`);
+            let activeImageIndex = Array.from(images).findIndex(img => img.classList.contains('active'));
+            images[activeImageIndex].classList.remove('active');
+            let nextImageIndex = (activeImageIndex + 1) % product.images.length;
+            images[nextImageIndex].classList.add('active');
         }
 
         function toggleCart() {
