@@ -265,7 +265,7 @@
             let cartDetails = Object.keys(cart).map(item => `${item} (x${cart[item].quantity}) - ₹${cart[item].price * cart[item].quantity}`).join('\n');
             let totalPrice = Object.values(cart).reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-            window.location.href = `https://wa.me/9745544623?text=I want to buy the following items:\n${cartDetails}\nTotal: ₹${totalPrice}\nCustomer Name: ${customerName}\nCustomer Place: ${customerPlace}`;
+            window.location.href = `https://wa.me/8281591993?text=I want to buy the following items:\n${cartDetails}\nTotal: ₹${totalPrice}\nCustomer Name: ${customerName}\nCustomer Place: ${customerPlace}`;
         }
 
         function searchProducts() {
