@@ -3,220 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Güzel Men's Wear</title>
+    <title>Guzel Days - Online Store</title>
     <style>
         body {
-            background-color: #F5F5F5;
-            color: #3D5229;
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
             text-align: center;
+            background: linear-gradient(to right, #ffafbd, #ffc3a0);
+            animation: fadeIn 1.5s ease-in;
         }
-        h1 {
-            color: #3D5229;
-            text-shadow: 0 0 10px #A3C585;
-        }
-        .nav button, .checkout button, .add-to-cart, .remove-btn {
-            padding: 10px;
-            margin: 5px;
-            background-color: #A3C585;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px #3D5229;
-            transition: transform 0.3s, box-shadow 0.3s;
+        header {
+            background: #333;
             color: white;
-        }
-        .nav button:hover, .checkout button:hover, .add-to-cart:hover, .remove-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px #3D5229;
-        }
-        .search-bar {
-            width: 80%;
-            padding: 10px;
-            margin: 20px auto;
-            border: 2px solid #3D5229;
-            border-radius: 10px;
-            font-size: 16px;
-            text-align: center;
-            background-color: white;
-            color: black;
-        }
-        .product-card {
-            display: inline-block;
-            border: 2px solid #3D5229;
-            padding: 10px;
-            margin: 10px;
-            width: 200px;
-            background: white;
-            border-radius: 15px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 0 10px #A3C585;
-            color: #3D5229;
-        }
-        .product-card:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px #3D5229;
-        }
-        .cart-emoji {
-            font-size: 30px;
-            cursor: pointer;
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #A3C585;
-            padding: 10px;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #3D5229;
-            color: white;
-        }
-        .cart {
-            display: none;
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #3D5229;
-            border-radius: 15px;
-            box-shadow: 0 0 10px #A3C585;
-            background-color: white;
-            color: #3D5229;
-        }
-        .cart-item {
+            padding: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+        #search-bar {
+            padding: 5px;
+            width: 200px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+        .product {
+            border: 1px solid #ddd;
+            margin: 15px;
+            padding: 15px;
+            width: 250px;
+            background: white;
+            box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+            position: relative;
+        }
+        .product:hover {
+            transform: scale(1.05);
+        }
+        .cart-button, .buy-button {
+            background: #ff4081;
+            color: white;
+            border: none;
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .cart-button:hover, .buy-button:hover {
+            background: #e60073;
+        }
+        #cart {
+            display: none;
+            position: fixed;
+            top: 50px;
+            right: 10px;
+            width: 250px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 5px;
+        }
+        #cart ul {
+            list-style: none;
+            padding: 0;
+        }
+        #cart li {
+            display: flex;
+            justify-content: space-between;
             margin: 5px 0;
+        }
+        .remove-btn {
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .image-slider {
+            position: relative;
+            width: 100%;
+            height: 150px;
+            overflow: hidden;
+        }
+        .image-slider img {
+            width: 100%;
+            height: 150px;
+            display: none;
+        }
+        .image-slider img.active {
+            display: block;
+        }
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+        }
+        .prev {
+            left: 5px;
+        }
+        .next {
+            right: 5px;
         }
     </style>
 </head>
 <body>
-
-    <h1>Güzel Men's Wear</h1>
-    <p>Luxury in Simplicity</p>
-
-    <div class="nav">
-        <button onclick="showSection('about')">About</button>
-        <button onclick="showSection('products')">Products</button>
-        <button onclick="window.open('https://wa.me/918281591993', '_blank')">Contact</button>
+    <header>
+        <h1>Guzel Days</h1>
+        <input type="text" id="search-bar" placeholder="Search for products...">
+        <button onclick="toggleCart()">🛒 Cart</button>
+    </header>
+    
+    <div id="cart">
+        <h2>Shopping Cart</h2>
+        <ul id="cart-items"></ul>
+        <button onclick="proceedToBuy()">Proceed to Buy</button>
     </div>
-
-    <div id="about" style="display: none;">
-        <h2>About Us</h2>
-        <p>About Güzel
-
-At , Güzel we specialize in crafting eco-friendly, summer-season linen touch, cotton shirts  for men. Our focus is on delivering the best quality, competitive pricing, and excellent customer service. We cater to both retail and wholesale markets, selling our products online and offline across India and the GCC region.
-
-Our brand is built on trust and authenticity, with marketing efforts driven by word-of-mouth publicity, WhatsApp, and our website. As we continue to grow, we are introducing a premium quality product line with luxury packaging, ensuring an elevated experience for our customers.
-
-At, Güzel believe in combining style, comfort, and sustainability—because fashion should feel as good as it looks.</p>
-    </div>
-
-    <div id="products" style="display: none;">
-        <h2>Our Products</h2>
-        <input type="text" class="search-bar" id="searchInput" onkeyup="searchProducts()" placeholder="Search for products...">
-        <div id="product-list">
-            <div class="product-card" data-name="Shirt">
-                <h3>Full-sleeve Shirt</h3>
-                <p>Price: ₹500</p>
-                <button class="add-to-cart" onclick="addToCart('Shirt', 500)">Add to Cart</button>
+    
+    <section class="container" id="products">
+        <div class="product" data-name="Product 1">
+            <div class="image-slider">
+                <img src="image1.jpg" class="active">
+                <img src="image2.jpg">
+                <img src="image3.jpg">
+                <button class="slider-btn prev" onclick="prevImage(this)">&lt;</button>
+                <button class="slider-btn next" onclick="nextImage(this)">&gt;</button>
             </div>
-            <div class="product-card" data-name="Linen Cloth">
-                <h3>Linen Cloth</h3>
-                <p>Price: ₹700</p>
-                <button class="add-to-cart" onclick="addToCart('Linen Cloth', 700)">Add to Cart</button>
-            </div>
-            <div class="product-card" data-name="Jeans">
-                <h3>Jeans</h3>
-                <p>Price: ₹1200</p>
-                <button class="add-to-cart" onclick="addToCart('Jeans', 1200)">Add to Cart</button>
-            </div>
+            <h3>Product 1</h3>
+            <p>Price: ₹500</p>
+            <button class="cart-button" onclick="addToCart('Product 1', 500)">Add to Cart</button>
+            <button class="buy-button" onclick="showPaymentOptions()">Buy Now</button>
         </div>
+    </section>
+    
+    <div id="payment-options" style="display: none;">
+        <h2>Select Payment Method</h2>
+        <button onclick="enterPIN('Google Pay')">Google Pay</button>
+        <button onclick="enterPIN('PhonePe')">PhonePe</button>
+        <button onclick="enterPIN('Paytm')">Paytm</button>
     </div>
-
-    <span class="cart-emoji" onclick="toggleCart()">🛒</span>
-
-    <div id="cart" class="cart">
-        <h2>Cart</h2>
-        <div id="cart-items"></div>
-        <p>Total: ₹<span id="total">0</span></p>
-        <div class="checkout">
-            <button onclick="checkout()">Proceed to Buy</button>
-        </div>
-    </div>
-
-    <footer>
-        <p>2025 Güzel Men's Wear - All Rights Reserved.</p>
-    </footer>
-
+    
     <script>
-        let cart = {};
-        let totalAmount = 0;
+        let cart = [];
 
-        function showSection(section) {
-            document.getElementById("about").style.display = "none";
-            document.getElementById("products").style.display = "none";
-            document.getElementById(section).style.display = "block";
+        function toggleCart() {
+            let cartElement = document.getElementById("cart");
+            cartElement.style.display = cartElement.style.display === "block" ? "none" : "block";
         }
 
-        function addToCart(item, price) {
-            if (cart[item]) {
-                cart[item].quantity += 1;
-            } else {
-                cart[item] = { price: price, quantity: 1 };
-            }
+        function addToCart(product, price) {
+            cart.push({ product, price });
             updateCart();
         }
 
-        function removeFromCart(item) {
-            if (cart[item]) {
-                cart[item].quantity -= 1;
-                if (cart[item].quantity <= 0) {
-                    delete cart[item];
-                }
-                updateCart();
-            }
-        }
-
         function updateCart() {
-            let cartItems = document.getElementById("cart-items");
-            cartItems.innerHTML = "";
-            totalAmount = 0;
-
-            for (let item in cart) {
-                let quantity = cart[item].quantity;
-                let price = cart[item].price * quantity;
-                totalAmount += price;
-                cartItems.innerHTML += `<div class="cart-item">
-                    <p>${item} (${quantity}) - ₹${price}</p>
-                    <button class="remove-btn" onclick="removeFromCart('${item}')">Remove</button>
-                </div>`;
-            }
-            document.getElementById("total").innerText = totalAmount;
-        }
-
-        function toggleCart() {
-            let cartSection = document.getElementById("cart");
-            cartSection.style.display = cartSection.style.display === "none" ? "block" : "none";
-        }
-
-        function checkout() {
-            if (totalAmount > 0) {
-                let upiUrl = `upi://pay?pa=yourUPIid@upi&pn=GuzelMen&am=${totalAmount}&cu=INR`;
-                window.location.href = upiUrl;
-            } else {
-                alert("Cart is empty!");
-            }
-        }
-
-        function searchProducts() {
-            let input = document.getElementById("searchInput").value.toLowerCase();
-            let products = document.querySelectorAll(".product-card");
-
-            products.forEach(product => {
-                let name = product.getAttribute("data-name").toLowerCase();
-                product.style.display = name.includes(input) ? "inline-block" : "none";
+            let cartList = document.getElementById("cart-items");
+            cartList.innerHTML = "";
+            cart.forEach((item, index) => {
+                let li = document.createElement("li");
+                li.innerHTML = `${item.product} - ₹${item.price} <button class='remove-btn' onclick='removeFromCart(${index})'>X</button>`;
+                cartList.appendChild(li);
             });
         }
-    </script>
 
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function proceedToBuy() {
+            showPaymentOptions();
+        }
+
+        function showPaymentOptions() {
+            document.getElementById("payment-options").style.display = "block";
+        }
+
+        function enterPIN(method) {
+            let pin = prompt("Enter your 4-digit PIN for " + method);
+            if (pin && pin.length === 4 && !isNaN(pin)) {
+                completePayment(method);
+            } else {
+                alert("Invalid PIN. Please try again.");
+            }
+        }
+
+        function completePayment(method) {
+            alert("Payment successful via " + method + "! Your order is placed.");
+        }
+
+        function prevImage(button) {
+            let images = button.parentElement.querySelectorAll("img");
+            let activeIndex = Array.from(images).findIndex(img => img.classList.contains("active"));
+            images[activeIndex].classList.remove("active");
+            images[(activeIndex - 1 + images.length) % images.length].classList.add("active");
+        }
+
+        function nextImage(button) {
+            let images = button.parentElement.querySelectorAll("img");
+            let activeIndex = Array.from(images).findIndex(img => img.classList.contains("active"));
+            images[activeIndex].classList.remove("active");
+            images[(activeIndex + 1) % images.length].classList.add("active");
+        }
+    </script>
 </body>
 </html>
