@@ -193,8 +193,9 @@
                 let imagesHTML = product.images.map((img, i) => 
                     <img src="${img}" class="${i === 0 ? 'active' : ''}">).join('');
                 
-                productContainer.innerHTML += 
-                    <div class="product">
+                productContainer.innerHTML += `
+    <div class="product">
+`;
                         <div class="image-slider" id="slider-${index}">
                             ${imagesHTML}
                             <button class="slider-btn prev" onclick="prevImage(${index})">&lt;</button>
